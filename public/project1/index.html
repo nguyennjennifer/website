@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Jennifer Nguyen" />
+    <meta name="description" content="Describe your website">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
+    <title>Project 1</title>
+    <meta name="generator" content="Hugo 0.70.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/projects/">PROJECTS</a></li>
+        
+        <li><a href="/resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="/project1/">Project 1</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          January 1, 0001
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<p>##<strong>Introduction</strong></p>
+<p>I chose the topic of movies for my project because I’m an avid movie watcher. I tend to go see most if not all blockbuster hits in theatres as soon as they’re released. If I’m not at the movies, I also have the habit of rewatching films I like over and over at home.</p>
+<p>The dataset ‘imdb’ contains information from the IMDb website about a certain selection of movies released between the years 2006-2016. The variables in the ‘imdb’ dataset include the rank, title, genre, general description, year, director, actors, runtime (in minutes), rating, votes that contributed to that rating, revenue (in millions), and a metascore rating. This dataset was found online at kaggle.com. The dataset ‘fandango’ contains information about a different selection of films written for an article for the newsletter fivethirtyeight. The variables in this dataset include ratings from Rotten Tomatoes, IMDb, Metacritic, and the respective normalized and rounded scores for each rating. Other variables also included vote counts for each rating, years, and the title of each film. This dataset was found on the preloaded packages called ‘fivethirtyeight’. The expectations I think I will see are that the ranks, ratings, and metascore ratings from the ‘imdb’ dataset will most likely by in correlation with the Rotten Tomatoes, IMDb, and Metacritic ratings from the ‘fandango’ dataset for any films that are in both datasets. My reasoning behind this expectation is that most movie ratings are done from professional critics who generally have the same consensus when rating movies.</p>
+<p>##<strong>Joining</strong></p>
+<pre class="r"><code># install.packages(&#39;formatR&#39;, repos =
+# &#39;http://cran.us.r-project.org&#39;)
+# install.packages(&#39;tidyverse&#39;, repos =
+# &#39;http://cran.us.r-project.org&#39;)
+library(tidyverse)
+imdb &lt;- read.csv(file = &quot;IMDB-Movie-Data.csv&quot;)
+glimpse(imdb)</code></pre>
+<pre><code>## Observations: 1,000
+## Variables: 12
+## $ Rank               &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,…
+## $ Title              &lt;fct&gt; Guardians of the Galaxy, Prometheus, Split, Sing, …
+## $ Genre              &lt;fct&gt; &quot;Action,Adventure,Sci-Fi&quot;, &quot;Adventure,Mystery,Sci-…
+## $ Description        &lt;fct&gt; &quot;A group of intergalactic criminals are forced to …
+## $ Director           &lt;fct&gt; James Gunn, Ridley Scott, M. Night Shyamalan, Chri…
+## $ Actors             &lt;fct&gt; &quot;Chris Pratt, Vin Diesel, Bradley Cooper, Zoe Sald…
+## $ Year               &lt;int&gt; 2014, 2012, 2016, 2016, 2016, 2016, 2016, 2016, 20…
+## $ Runtime..Minutes.  &lt;int&gt; 121, 124, 117, 108, 123, 103, 128, 89, 141, 116, 1…
+## $ Rating             &lt;dbl&gt; 8.1, 7.0, 7.3, 7.2, 6.2, 6.1, 8.3, 6.4, 7.1, 7.0, …
+## $ Votes              &lt;int&gt; 757074, 485820, 157606, 60545, 393727, 56036, 2586…
+## $ Revenue..Millions. &lt;dbl&gt; 333.13, 126.46, 138.12, 270.32, 325.02, 45.13, 151…
+## $ Metascore          &lt;int&gt; 76, 65, 62, 59, 40, 42, 93, 71, 78, 41, 66, 74, 65…</code></pre>
+<pre class="r"><code>library(fivethirtyeight)
+fandango &lt;- as.data.frame(fandango)
+glimpse(fandango)</code></pre>
+<pre><code>## Observations: 146
+## Variables: 23
+## $ film                       &lt;chr&gt; &quot;Avengers: Age of Ultron&quot;, &quot;Cinderella&quot;, &quot;…
+## $ year                       &lt;dbl&gt; 2015, 2015, 2015, 2015, 2015, 2015, 2015, …
+## $ rottentomatoes             &lt;int&gt; 74, 85, 80, 18, 14, 63, 42, 86, 99, 89, 84…
+## $ rottentomatoes_user        &lt;int&gt; 86, 80, 90, 84, 28, 62, 53, 64, 82, 87, 77…
+## $ metacritic                 &lt;int&gt; 66, 67, 64, 22, 29, 50, 53, 81, 81, 80, 71…
+## $ metacritic_user            &lt;dbl&gt; 7.1, 7.5, 8.1, 4.7, 3.4, 6.8, 7.6, 6.8, 8.…
+## $ imdb                       &lt;dbl&gt; 7.8, 7.1, 7.8, 5.4, 5.1, 7.2, 6.9, 6.5, 7.…
+## $ fandango_stars             &lt;dbl&gt; 5.0, 5.0, 5.0, 5.0, 3.5, 4.5, 4.0, 4.0, 4.…
+## $ fandango_ratingvalue       &lt;dbl&gt; 4.5, 4.5, 4.5, 4.5, 3.0, 4.0, 3.5, 3.5, 4.…
+## $ rt_norm                    &lt;dbl&gt; 3.70, 4.25, 4.00, 0.90, 0.70, 3.15, 2.10, …
+## $ rt_user_norm               &lt;dbl&gt; 4.30, 4.00, 4.50, 4.20, 1.40, 3.10, 2.65, …
+## $ metacritic_norm            &lt;dbl&gt; 3.30, 3.35, 3.20, 1.10, 1.45, 2.50, 2.65, …
+## $ metacritic_user_nom        &lt;dbl&gt; 3.55, 3.75, 4.05, 2.35, 1.70, 3.40, 3.80, …
+## $ imdb_norm                  &lt;dbl&gt; 3.90, 3.55, 3.90, 2.70, 2.55, 3.60, 3.45, …
+## $ rt_norm_round              &lt;dbl&gt; 3.5, 4.5, 4.0, 1.0, 0.5, 3.0, 2.0, 4.5, 5.…
+## $ rt_user_norm_round         &lt;dbl&gt; 4.5, 4.0, 4.5, 4.0, 1.5, 3.0, 2.5, 3.0, 4.…
+## $ metacritic_norm_round      &lt;dbl&gt; 3.5, 3.5, 3.0, 1.0, 1.5, 2.5, 2.5, 4.0, 4.…
+## $ metacritic_user_norm_round &lt;dbl&gt; 3.5, 4.0, 4.0, 2.5, 1.5, 3.5, 4.0, 3.5, 4.…
+## $ imdb_norm_round            &lt;dbl&gt; 4.0, 3.5, 4.0, 2.5, 2.5, 3.5, 3.5, 3.5, 3.…
+## $ metacritic_user_vote_count &lt;int&gt; 1330, 249, 627, 31, 88, 34, 17, 124, 62, 5…
+## $ imdb_user_vote_count       &lt;int&gt; 271107, 65709, 103660, 3136, 19560, 39373,…
+## $ fandango_votes             &lt;int&gt; 14846, 12640, 12055, 1793, 1021, 397, 252,…
+## $ fandango_difference        &lt;dbl&gt; 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.…</code></pre>
+<pre class="r"><code>fandango &lt;- fandango %&gt;% rename(Title = film) %&gt;% select(-year)
+films &lt;- imdb %&gt;% inner_join(fandango)
+glimpse(films)</code></pre>
+<pre><code>## Observations: 59
+## Variables: 33
+## $ Rank                       &lt;int&gt; 64, 66, 68, 86, 95, 110, 132, 168, 176, 18…
+## $ Title                      &lt;chr&gt; &quot;Fifty Shades of Grey&quot;, &quot;Kingsman: The Sec…
+## $ Genre                      &lt;fct&gt; &quot;Drama,Romance,Thriller&quot;, &quot;Action,Adventur…
+## $ Description                &lt;fct&gt; &quot;Literature student Anastasia Steele&#39;s lif…
+## $ Director                   &lt;fct&gt; Sam Taylor-Johnson, Matthew Vaughn, George…
+## $ Actors                     &lt;fct&gt; &quot;Dakota Johnson, Jamie Dornan, Jennifer Eh…
+## $ Year                       &lt;int&gt; 2015, 2014, 2015, 2015, 2015, 2014, 2014, …
+## $ Runtime..Minutes.          &lt;int&gt; 125, 129, 120, 124, 141, 108, 125, 109, 13…
+## $ Rating                     &lt;dbl&gt; 4.1, 7.7, 8.1, 7.0, 7.4, 7.7, 6.0, 7.3, 6.…
+## $ Votes                      &lt;int&gt; 244474, 440209, 632842, 455169, 516895, 33…
+## $ Revenue..Millions.         &lt;dbl&gt; 166.15, 128.25, 153.63, 652.18, 458.99, 25…
+## $ Metascore                  &lt;int&gt; 46, 58, 90, 59, 66, 78, 69, 51, 60, 64, 67…
+## $ rottentomatoes             &lt;int&gt; 25, 75, 97, 71, 74, 92, 71, 52, 50, 80, 85…
+## $ rottentomatoes_user        &lt;int&gt; 42, 84, 88, 81, 86, 86, 50, 81, 53, 90, 80…
+## $ metacritic                 &lt;int&gt; 46, 58, 89, 59, 66, 78, 69, 51, 60, 64, 67…
+## $ metacritic_user            &lt;dbl&gt; 3.2, 7.9, 8.7, 7.0, 7.1, 7.9, 6.1, 7.2, 6.…
+## $ imdb                       &lt;dbl&gt; 4.2, 7.8, 8.3, 7.3, 7.8, 7.7, 6.0, 7.4, 6.…
+## $ fandango_stars             &lt;dbl&gt; 4.0, 4.5, 4.5, 4.5, 5.0, 4.5, 3.5, 4.5, 4.…
+## $ fandango_ratingvalue       &lt;dbl&gt; 3.9, 4.2, 4.3, 4.5, 4.5, 4.1, 3.4, 4.4, 3.…
+## $ rt_norm                    &lt;dbl&gt; 1.25, 3.75, 4.85, 3.55, 3.70, 4.60, 3.55, …
+## $ rt_user_norm               &lt;dbl&gt; 2.10, 4.20, 4.40, 4.05, 4.30, 4.30, 2.50, …
+## $ metacritic_norm            &lt;dbl&gt; 2.30, 2.90, 4.45, 2.95, 3.30, 3.90, 3.45, …
+## $ metacritic_user_nom        &lt;dbl&gt; 1.60, 3.95, 4.35, 3.50, 3.55, 3.95, 3.05, …
+## $ imdb_norm                  &lt;dbl&gt; 2.10, 3.90, 4.15, 3.65, 3.90, 3.85, 3.00, …
+## $ rt_norm_round              &lt;dbl&gt; 1.5, 4.0, 5.0, 3.5, 3.5, 4.5, 3.5, 2.5, 2.…
+## $ rt_user_norm_round         &lt;dbl&gt; 2.0, 4.0, 4.5, 4.0, 4.5, 4.5, 2.5, 4.0, 2.…
+## $ metacritic_norm_round      &lt;dbl&gt; 2.5, 3.0, 4.5, 3.0, 3.5, 4.0, 3.5, 2.5, 3.…
+## $ metacritic_user_norm_round &lt;dbl&gt; 1.5, 4.0, 4.5, 3.5, 3.5, 4.0, 3.0, 3.5, 3.…
+## $ imdb_norm_round            &lt;dbl&gt; 2.0, 4.0, 4.0, 3.5, 4.0, 4.0, 3.0, 3.5, 3.…
+## $ metacritic_user_vote_count &lt;int&gt; 778, 1054, 2375, 1281, 1330, 672, 307, 72,…
+## $ imdb_user_vote_count       &lt;int&gt; 179506, 272204, 292023, 241807, 271107, 15…
+## $ fandango_votes             &lt;int&gt; 34846, 15205, 10509, 34390, 14846, 3458, 1…
+## $ fandango_difference        &lt;dbl&gt; 0.1, 0.3, 0.2, 0.0, 0.5, 0.4, 0.1, 0.1, 0.…</code></pre>
+<pre class="r"><code>imdb %&gt;% anti_join(fandango) %&gt;% summarize(n())</code></pre>
+<pre><code>##   n()
+## 1 941</code></pre>
+<p>The first step was to import both datasets; the ‘imdb’ dataset was found online at Kaggle.com and the ‘fandango’ dataset was found as a package on R. I also dropped the ‘year’ variable from the original ‘fandango’ dataset since the ‘imdb’ dataset had its own ‘Year’ variable with differing observations. In the ‘fandango’ dataset, the ‘title’ variable was renamed to ‘Title’ variable in order to join it together with the corresponding ‘Title’ variable in the ‘imdb’ dataset. Then, I used the command ‘inner_join’ in order create a new ‘films’ dataset, while dropping any rows that didn’t have a match in ‘imdb’ and ‘fandango’ datasets. By doing this, I would be left with only the movies that had their respective rating and descriptive information in both datasets. This would ensure that my future summary statistics would have no NA’s in either dataset. In other words, that means that the cases that were dropped would be movies that had no information in the other dataset. For example, the movie ‘12 Years A Slave’ from the ‘imdb’ dataset was not seen in the ‘fandango’ dataset, indicating that it was most likely not used in fivethirtyeight’s newsarticle about fandango ratings. I also used the commands ‘anti_join’, ‘count’, and ‘summarize’ to count 941 rows that were dropped after joining the two datasets. The potential problem of dropping so many rows would be that my dataset would be representative of a very miniscule portion of the movie industry, instead of the industry as a whole. There is also a chance of having an unequal amount of movies for each year for the ‘films’ dataset.</p>
+<p>##<strong>Wrangling and Tidying</strong></p>
+<pre class="r"><code># summary statistic 1
+films %&gt;% filter(Year == &quot;2015&quot;) %&gt;% mutate(Runtime..Hrs = Runtime..Minutes./60) %&gt;% 
+    select(Title, Runtime..Minutes., Runtime..Hrs) %&gt;% arrange(desc(Runtime..Hrs)) %&gt;% 
+    glimpse()</code></pre>
+<pre><code>## Observations: 42
+## Variables: 3
+## $ Title             &lt;chr&gt; &quot;Straight Outta Compton&quot;, &quot;Avengers: Age of Ultron&quot;…
+## $ Runtime..Minutes. &lt;int&gt; 147, 141, 137, 133, 130, 127, 126, 125, 125, 124, 1…
+## $ Runtime..Hrs      &lt;dbl&gt; 2.450000, 2.350000, 2.283333, 2.216667, 2.166667, 2…</code></pre>
+<pre class="r"><code># summary statistic 2
+films2 &lt;- films %&gt;% separate(Genre, into = c(&quot;genre1&quot;, &quot;genre2&quot;, 
+    &quot;genre3&quot;), sep = &quot;,&quot;)
+films2 %&gt;% group_by(genre1, Year) %&gt;% summarize(count = n()) %&gt;% 
+    pivot_wider(names_from = &quot;genre1&quot;, values_from = &quot;count&quot;)</code></pre>
+<pre><code>## # A tibble: 2 x 10
+##    Year Action Adventure Animation Biography Comedy Crime Drama Horror Mystery
+##   &lt;int&gt;  &lt;int&gt;     &lt;int&gt;     &lt;int&gt;     &lt;int&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;int&gt;   &lt;int&gt;
+## 1  2014      4         3        NA         3      3    NA     2      1       1
+## 2  2015     14         3         3         3      8     2     7     NA       2</code></pre>
+<pre class="r"><code># summary statistic 3-6
+films %&gt;% summarize(min(rottentomatoes), max(rottentomatoes), 
+    median(rottentomatoes), IQR(rottentomatoes))</code></pre>
+<pre><code>##   min(rottentomatoes) max(rottentomatoes) median(rottentomatoes)
+## 1                   9                  99                     54
+##   IQR(rottentomatoes)
+## 1                49.5</code></pre>
+<pre class="r"><code># summary statistic 7-9
+films %&gt;% group_by(Year) %&gt;% summarize(mean(Runtime..Minutes.), 
+    sd(Runtime..Minutes.), var(Runtime..Minutes.))</code></pre>
+<pre><code>## # A tibble: 2 x 4
+##    Year `mean(Runtime..Minutes.)` `sd(Runtime..Minutes.… `var(Runtime..Minutes.…
+##   &lt;int&gt;                     &lt;dbl&gt;                  &lt;dbl&gt;                   &lt;dbl&gt;
+## 1  2014                      116.                   19.2                    368.
+## 2  2015                      114.                   13.2                    174.</code></pre>
+<pre class="r"><code># summary statistic 10-11
+films2 %&gt;% group_by(genre1) %&gt;% summarize(first(Metascore), last(Metascore))</code></pre>
+<pre><code>## # A tibble: 9 x 3
+##   genre1    `first(Metascore)` `last(Metascore)`
+##   &lt;chr&gt;                  &lt;int&gt;             &lt;int&gt;
+## 1 Action                    58                34
+## 2 Adventure                 69                47
+## 3 Animation                 94                55
+## 4 Biography                 51                NA
+## 5 Comedy                    75                33
+## 6 Crime                     51                41
+## 7 Drama                     46                39
+## 8 Horror                    83                83
+## 9 Mystery                   30                24</code></pre>
+<pre class="r"><code># summary statistic 12
+films %&gt;% select(rottentomatoes, metacritic, imdb) %&gt;% cor</code></pre>
+<pre><code>##                rottentomatoes metacritic      imdb
+## rottentomatoes      1.0000000  0.9545118 0.7320033
+## metacritic          0.9545118  1.0000000 0.6640912
+## imdb                0.7320033  0.6640912 1.0000000</code></pre>
+<p>Statistic 1 showcases the runtime in both hours and minutes of movies only released in 2015, and utilizes the dplyr functions ‘filter’, ‘arrange’, ‘select’ and ‘mutate’. I mutated the runtime in minutes in order to generate the runtime in hours. Statistic 2 showcases the number of movies categorized by genre that were released in each year, and utilizes the last 2 core dplyr functions ‘group_by’ and ‘summarize’. Since the original ‘genre’ variable had multiple genres within it, I ended up separating the variable in order to create a general genre variable called ‘genre1’. The other genres that did not fall into the ‘genre1’ variable were put under ‘genre2’ and ‘genre3’ variables. I saved this dataset with the separated genre variables as a new ‘film2’ dataset in order to use it again later on in this project. Statistic 2 also grouped by 2 categorical variables, ‘genre1’ and ‘year’. I also illustrated <strong>tidying</strong> with the ‘pivot_wider’ command in statistic 2, giving each genre their own variable in order to better organize the counts of each movie of each year. This statistic also illustrates grouping by two categorical variables.</p>
+<p>Statistic 3-6 focuses on Rotten Tomato ratings, by summarizing 4 statistics; the minimum, maximum, median, and IQR of the Rotten Tomato ratings in the dataset. Statistic 7-9 summarizes 3 more statistics; the mean, standard deviation, and variation of the runtime (in minutes) of each (or grouped by) the categorical variable ‘year’. Statistic 10-11 summarizes 2 more additional statistics by summarizing the first and last Metascore rating of each general genre listed by rank. Lastly, statistic 12, showcases a correlation of the numeric variables of Rotten Tomatoes ratings, Metacritic ratings, and IMDb ratings.</p>
+<p>##<strong>Visualizing</strong></p>
+<pre class="r"><code>films3 &lt;- films %&gt;% select(Rating, Runtime..Minutes., rottentomatoes, 
+    metacritic, imdb)
+films3 %&gt;% select_if(is.numeric) %&gt;% cor %&gt;% as.data.frame %&gt;% 
+    rownames_to_column %&gt;% pivot_longer(-1) %&gt;% ggplot(aes(rowname, 
+    name, fill = value)) + geom_tile() + geom_text(aes(label = round(value, 
+    2))) + xlab(&quot;&quot;) + ylab(&quot;&quot;) + theme(axis.text.x = element_text(angle = 45, 
+    hjust = 1)) + scale_fill_gradient2(low = &quot;yellow&quot;, high = &quot;red&quot;) + 
+    theme_minimal() + ggtitle(&quot;Correlation heatmap of films3 dataset&quot;)</code></pre>
+<p><img src="/project1_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" />
+Please note that the new ‘films3’ dataset was generated with five numeric variables. The original ‘films’ dataset had 26 numeric variables and thus would have generated a confusing and garbled correlation heatmap.</p>
+<pre class="r"><code>films2 %&gt;% ggplot(aes(x = Rank, y = Revenue..Millions., color = genre1)) + 
+    geom_point() + theme_minimal() + scale_y_continuous(breaks = seq(0, 
+    650, 100)) + scale_color_brewer(palette = &quot;Set2&quot;) + ggtitle(&quot;Plot of movie revenue (in millions of dollars) and ranks by genre&quot;) + 
+    ylab(&quot;Revenue (in millions of dollars)&quot;)</code></pre>
+<p><img src="/project1_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>This scatterplot maps 3 variables; rank, revenue (in millions), and genre. In other words, the scatterplot showcases the rank of movies and their corresponding revenue (in millions of dollars), color coded by their general genre. From the plot, it can be seen that there is a negative trend; action movies decrease in revenue as their rank increases. Overall, the same negative trend can be seen be for all the movies in the dataset, regardless of their genre. Even though the observations are assorted by genre, it should be noted that some genres have only one or a few movies so this plot may not be representative of the movie industry.</p>
+<pre class="r"><code>films2 %&gt;% ggplot(aes(Year, fill = genre1)) + geom_bar(aes(y = Revenue..Millions., 
+    position = &quot;fill&quot;), stat = &quot;summary&quot;, fun.y = &quot;mean&quot;) + scale_fill_brewer(palette = &quot;Pastel1&quot;) + 
+    theme_light() + scale_x_continuous(breaks = c(2014, 2015)) + 
+    ggtitle(&quot;Bar graph of movie revenue (in millions of dollars) of each genre by year&quot;) + 
+    ylab(&quot;Revenue (in millions of dollars)&quot;)</code></pre>
+<p><img src="/project1_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>This bar graph maps 3 variables; year, revenue (in millions), and genre. In other words, the bar graph showcases how much revenue was made each year, and the proportions of how much each genre made in that year. It can be seen that the adventure genre made the most revenue in 2014. However, in 2015, the animation genre made the most revenue. For both years, it can be seen that crime, mystery, and horror genres made only a small portion of the revenue in their respective years. Overall, the 2014 movies made less revenue when compared to the 2015 movies in this dataset.</p>
+<p>##<strong>Dimensionality Reduction</strong></p>
+<pre class="r"><code>films4 &lt;- films %&gt;% select(Year, Rank, Rating, rottentomatoes, 
+    Metascore, imdb, Revenue..Millions., fandango_stars)
+
+library(cluster)
+pam_dat &lt;- films4 %&gt;% select(-Year) %&gt;% scale()
+sil_width &lt;- vector()
+for (i in 2:10) {
+    pam_fit &lt;- pam(pam_dat, k = i)
+    sil_width[i] &lt;- pam_fit$silinfo$avg.width
+}
+ggplot() + geom_line(aes(x = 1:10, y = sil_width)) + scale_x_continuous(name = &quot;k&quot;, 
+    breaks = 1:10)</code></pre>
+<p><img src="/project1_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>pam &lt;- films4 %&gt;% select(-Year) %&gt;% scale() %&gt;% pam(k = 2)
+pam</code></pre>
+<pre><code>## Medoids:
+##      ID        Rank     Rating rottentomatoes Metascore       imdb
+## [1,] 35  0.05422346 -0.6522711     -0.9122404 -1.162387 -0.6722092
+## [2,] 18 -0.74271278  0.5783217      1.3644415  1.172205  0.5802227
+##      Revenue..Millions. fandango_stars
+## [1,]        -0.12650405     -0.4514784
+## [2,]         0.04037592      0.4670467
+## Clustering vector:
+##  [1] 1 2 2 2 2 2 2 2 1 2 2 2 2 1 2 2 1 2 2 1 2 2 1 2 1 2 2 1 1 2 1 1 2 1 1 1 1 1
+## [39] 1 1 2 2 2 1 1 1 1 1 2 1 1 1 1 1 2 1 1 1 2
+## Objective function:
+##    build     swap 
+## 2.104881 2.020004 
+## 
+## Available components:
+##  [1] &quot;medoids&quot;    &quot;id.med&quot;     &quot;clustering&quot; &quot;objective&quot;  &quot;isolation&quot; 
+##  [6] &quot;clusinfo&quot;   &quot;silinfo&quot;    &quot;diss&quot;       &quot;call&quot;       &quot;data&quot;</code></pre>
+<pre class="r"><code># install.packages(&#39;GGally&#39;, repos =
+# &#39;http://cran.us.r-project.org&#39;))
+library(GGally)
+plot(pam, which = 2)</code></pre>
+<p><img src="/project1_files/figure-html/unnamed-chunk-6-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>films4 %&gt;% mutate(cluster = as.factor(pam$clustering)) %&gt;% ggpairs(columns = 2:8, 
+    aes(color = cluster))</code></pre>
+<p><img src="/project1_files/figure-html/unnamed-chunk-6-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>For the clustering analysis, the ‘films3’ dataset was generated with 8 numerical variables; the original dataset had 26 numerical variables and would have generated confusing plots and visualizations. The first step in the cluster analysis was to process the data and scale it. For the second step, the first plot was generated so I could look at my mean silhouette width in order to choose the number of clusters to use for PAM analysis. Since the “elbow” peaks at 2 and gradually decreases, this indicates that k = 2 or that 2 clusters will be used in this analysis. For the third through fifth steps, the PAM analysis was ran, the clusters were interpreted, and then visualized.</p>
+<p>Pertaining to the silhouette plot or the second plot, it can be said that the cluster structure is weak and possibly artificial since the average silhouette widths were between 0.26-0.50. The third plot visualizes all pairwise combinations of the 7 variables. It can be said that most of the variables do not map nicely since most of the clusters can be seen to be overlapping. The clusters can be seen most distinctly when comparing the ‘rottentomatoes’ and ‘Rating’ variables plot or the ‘Metascore’ and ‘Rating’ variables plot.</p>
+
+              <hr>
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/docs.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

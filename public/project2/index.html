@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Jennifer Nguyen" />
+    <meta name="description" content="Describe your website">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
+    <title>Project 2</title>
+    <meta name="generator" content="Hugo 0.70.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/projects/">PROJECTS</a></li>
+        
+        <li><a href="/resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="/project2/">Project 2</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          January 1, 0001
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<p>#Introduction
+I chose the cancer dataset from the survival package. This dataset contains information pertaining to the survival of lung cancer patients from the North Central Cancer Treatmnet Group. Originally, I chose 6 variables from the dataset. However, I had to mutate certain variables in order to get binary and categorical variables. I also had to change the levels of the binary variable from “1” and “2” to “0” and “1” for later use. The resulting dataset I used had 8 variables.</p>
+<p>In this dataset, the binary variable is the sex variable and has two levels, male (1) or female (2). I mutated the sex variable into a categorical variable called “sex_cat” that had “male” and “female” for their respective observations. Another binary variable is the status variable, and it holds the censoring status of the patient as either 0 (censored) or 1 (dead). A categorical variable was created from the binary status variable named “status_cat” that has the levels of “censored” and “dead” to indicate the respective status of the patient. The numeric variables are the ph.ecog variable, the ph.karno variable, the time variable, and the age variable. The ph.ecog variable measures the status of the patient from 0 to 4, with 0 being asymptomatic and 4 being bedbound. The ph.karno variable is the Karnofsky performance score on a scale from 0 to 100 rated by a physician, with 0 being bad and 100 being good. The time variable is the survival time in days of the patient. The age variable tells us the age of the patient. There are 226 observations in my dataset.</p>
+<p>##1. MANOVA</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ───────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.0     ✓ purrr   0.3.3
+## ✓ tibble  2.1.3     ✓ dplyr   0.8.5
+## ✓ tidyr   1.0.2     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ──────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(survival)
+cancer &lt;- cancer  %&gt;% select(sex, status, age, time, ph.ecog, ph.karno) %&gt;% na.omit %&gt;% 
+  mutate(status_cat = case_when(status==1 ~ &quot;censored&quot;, status==2 ~ &quot;dead&quot;),
+         status = as.numeric(case_when(status==1 ~ &quot;0&quot;, status==2 ~ &quot;1&quot;)), 
+         sex_cat = case_when(sex==1 ~ &quot;male&quot;, sex ==2 ~ &quot;female&quot;)) %&gt;%
+  select(sex, sex_cat, status, status_cat, age, time, ph.ecog, ph.karno) 
+cancer %&gt;% summarize(count = n()) </code></pre>
+<pre><code>##   count
+## 1   226</code></pre>
+<pre class="r"><code>#MANOVA
+man1 &lt;- manova(cbind(age, time, ph.ecog, ph.karno)~status_cat, data=cancer)
+summary(man1) </code></pre>
+<pre><code>##             Df   Pillai approx F num Df den Df   Pr(&gt;F)   
+## status_cat   1 0.079056   4.7428      4    221 0.001087 **
+## Residuals  224                                            
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>summary.aov(man1) #ANOVA</code></pre>
+<pre><code>##  Response age :
+##              Df  Sum Sq Mean Sq F value  Pr(&gt;F)  
+## status_cat    1   425.2  425.16  5.2164 0.02331 *
+## Residuals   224 18257.0   81.50                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+##  Response time :
+##              Df  Sum Sq Mean Sq F value  Pr(&gt;F)  
+## status_cat    1  276925  276925  6.3952 0.01213 *
+## Residuals   224 9699623   43302                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+##  Response ph.ecog :
+##              Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## status_cat    1   6.105  6.1047  12.516 0.0004905 ***
+## Residuals   224 109.258  0.4878                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+##  Response ph.karno :
+##              Df Sum Sq Mean Sq F value   Pr(&gt;F)   
+## status_cat    1   1082 1082.39  7.3962 0.007049 **
+## Residuals   224  32781  146.35                    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>#t tests
+pairwise.t.test(cancer$ph.karno, cancer$status_cat, p.adj = &quot;none&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  cancer$ph.karno and cancer$status_cat 
+## 
+##      censored
+## dead 0.007   
+## 
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>pairwise.t.test(cancer$ph.ecog, cancer$status_cat, p.adj = &quot;none&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  cancer$ph.ecog and cancer$status_cat 
+## 
+##      censored
+## dead 0.00049 
+## 
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>.05/(1+4+2) #bonferroni adjustment is 0.0056 (1 MANOVA, 4 ANOVAs, 2 t tests)</code></pre>
+<pre><code>## [1] 0.007142857</code></pre>
+<pre class="r"><code>1-((.95)^7) #type I error</code></pre>
+<pre><code>## [1] 0.3016627</code></pre>
+<p>There were 7 total tests (1 MANOVA, 4 ANOVAs, 2 t tests) conducted, resulting in a probability of 0.3017 for at least one type I error. Thus, the adjusted alpha or the bonferroni correction is 0.0071 after adjusting for multiple comparisons.</p>
+<p>According to the MANOVA, for at least one of the dependent variables, at least one of the statuses mean were significantly different (p-value (0.0011) less than the alpha). Since the MANOVA resulted in a significant difference, univariate ANOVAs were run on each dependent variable. According to the univariate ANOVAs, there is significant evidence that shows that for the ph.ecog and the ph.karno variable, at least one species mean differs after adjusting for multiple comparisons (p-values (0.0005 and 0.0070 respectively) less than the alpha). The post hoc analysis showed that both statuses were found to differ signficantly from each other in terms of the ph.karno variable after adjusting for multiple comparisons (p-value (0.0070) less than the alpha). Likewise, both statuses were also found to differ significantly in terms of the ph.ecog variable after adjustment (p-value (0.0005) less than the alpha).</p>
+<pre class="r"><code>#multivariate normality assumption
+ggplot(cancer, aes(x=age, y=time)) + geom_point(alpha = .5) +geom_density_2d(h=2)  +facet_wrap(~status_cat)</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(cancer, aes(x=ph.ecog, y=ph.karno)) + geom_point(alpha = .5) +geom_density_2d(h=2)  +facet_wrap(~status_cat)</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<pre class="r"><code>#homogeneity of (co)variances assumption
+covmats &lt;- cancer %&gt;% select(age, time, ph.ecog, ph.karno, status_cat) %&gt;%
+  group_by(status_cat) %&gt;% do(covs=cov(.[1:4])) 
+for(i in 1:2){print(as.character(covmats$status_cat[i])); print(covmats$covs[i])}</code></pre>
+<pre><code>## [1] &quot;censored&quot;
+## [[1]]
+##                 age        time     ph.ecog    ph.karno
+## age       94.773169   -41.00589   2.5174091  -41.272401
+## time     -41.005888 48901.28469 -14.1418331 -367.114695
+## ph.ecog    2.517409   -14.14183   0.4137225   -5.143369
+## ph.karno -41.272401  -367.11470  -5.1433692  118.637993
+## 
+## [1] &quot;dead&quot;
+## [[1]]
+##                  age        time     ph.ecog   ph.karno
+## age        76.426191  -130.46311   0.4845490 -12.126032
+## time     -130.463114 41158.90661 -27.5934636 483.869196
+## ph.ecog     0.484549   -27.59346   0.5160948  -7.379005
+## ph.karno  -12.126032   483.86920  -7.3790048 156.949178</code></pre>
+<p>From looking at my multivariate plots, it looks like the assumption of multivariate normality was not met. Likewise, the assumption of homogeneity of (co)variances does not look like it has been met since the values for the censored and dead statuses differ greatly.</p>
+<p>#2. Randomization Test</p>
+<pre class="r"><code>#H0: mean survival times are the same for censored vs. dead status
+#Ha: mean survival times are different for censored vs. dead status
+data1 &lt;- data.frame(status_cat=cancer$status_cat,time = cancer$time)
+ggplot(data1, aes(time, fill=status_cat)) + geom_histogram(bins=6) + facet_wrap(~status_cat, ncol=2) </code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>data1 %&gt;% group_by(status_cat) %&gt;% summarize(means=mean(time)) %&gt;% 
+  summarize(`mean_diff`=diff(means)) #actual mean difference or observed test statistic</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   mean_diff
+##       &lt;dbl&gt;
+## 1     -78.1</code></pre>
+<p>The null hypothesis is that the mean survival times are the same for censored vs. dead statuses. The alternative hypothesis is that the survival times are different for censored vs. dead statuses. A histogram was created in order to show the distribution of survival times for each status. The actual mean difference was calculated to be -78.06768 days.</p>
+<pre class="r"><code>#randomization test
+rand_dist&lt;-vector()
+for(i in 1:5000){ 
+  new&lt;-data.frame(time=sample(data1$time), status_cat=data1$status_cat)
+  rand_dist[i]&lt;- mean(new[new$status_cat==&quot;censored&quot;,]$time) - 
+    mean(new[new$status==&quot;dead&quot;,]$time)}
+mean(rand_dist&lt; -78.06768 | rand_dist&gt; 78.06768 ) #two-tailed p-value</code></pre>
+<pre><code>## [1] 0.0138</code></pre>
+<pre class="r"><code>{hist(rand_dist,main=&quot;&quot;,ylab=&quot;&quot;); abline(v = c(-78.06768, 78.06768)  ,col=&quot;red&quot;)}</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>t.test(data=data1, time~status_cat)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  time by status_cat
+## t = 2.434, df = 104.66, p-value = 0.01663
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##   14.46914 141.66622
+## sample estimates:
+## mean in group censored     mean in group dead 
+##               363.4603               285.3926</code></pre>
+<p>After running the randomization test, the two-tailed p-value (0.0106) was found to be less than the alpha, indicating that I should reject the null hypothesis. This p-value corresponds with the probability of observing a mean difference as extreme as the actual mean difference in this randomization distribution and is illustrated by the histogram. I then conducted a t test for comparison, resulting in a p-value of 0.0166, also reinforcing that I should reject the null.</p>
+<p>#3. Linear Regression</p>
+<pre class="r"><code>cancer &lt;- cancer %&gt;% mutate(age_c= age - mean(age)) #mean-centering
+fit1 &lt;- lm(time ~ age_c*status_cat, data = cancer)
+summary(fit1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = time ~ age_c * status_cat, data = cancer)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -277.51 -147.31  -67.93   89.03  664.49 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)          362.5057    26.9614  13.445   &lt;2e-16 ***
+## age_c                 -0.4327     2.7216  -0.159   0.8738    
+## status_catdead       -75.6575    31.5673  -2.397   0.0174 *  
+## age_c:status_catdead  -1.2744     3.3049  -0.386   0.7002    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 208.6 on 222 degrees of freedom
+## Multiple R-squared:  0.03148,    Adjusted R-squared:  0.0184 
+## F-statistic: 2.406 on 3 and 222 DF,  p-value: 0.06824</code></pre>
+<pre class="r"><code>#regression plot
+cancer %&gt;% ggplot(aes(age_c, time, color=status_cat)) + 
+  geom_point(aes(color=status_cat)) + geom_smooth(method = &quot;lm&quot;, se=F)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>The predicted survival time is 362.5057 days for a patient with a censored status and an average age. Patients with a censored status show a decrease of 0.4327 days in survival time for every 1 year increase in age on average. For patients with an average age, survival time is 75.6575 days lower for dead patients than censored patients. The slope for age on survival time is 1.2744 lesser for dead patients compared to censored patients. There is also a regression plot that showcases the best-fitting line.</p>
+<pre class="r"><code>#linearity 
+resids &lt;- fit1$residuals
+fitvals &lt;- fit1$fitted.values
+ggplot()+geom_point(aes(fitvals,resids))+geom_hline(yintercept=0, color=&#39;red&#39;)</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>#normality
+shapiro.test(resids)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  resids
+## W = 0.90016, p-value = 4.021e-11</code></pre>
+<pre class="r"><code>#homoskedasticity
+library(sandwich)
+library(lmtest)</code></pre>
+<pre><code>## Loading required package: zoo</code></pre>
+<pre><code>## 
+## Attaching package: &#39;zoo&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     as.Date, as.Date.numeric</code></pre>
+<pre class="r"><code>bptest(fit1)</code></pre>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  fit1
+## BP = 1.1105, df = 3, p-value = 0.7745</code></pre>
+<p>For the linearity assumption, the residual v. fitted values plot showcases if there is linearity. Since there was a gap between the 325 and 350 fitted value marks indicating that the data points are not randomly dispersed, it is most likely that the linearity assumption was not met. For the normality assumption, the p-value (4.02e-11) from the Shapiro-Wilk test was less than the alpha, indicating that I should reject the null hypothesis of normality. Therefore, the normality assumption was also not met. For the homoskedasticity assumption, the Breusch-Pagan test was run and resulted in a p-value (0.7745) greater than the alpha, resulting in a failure to reject the null hypothesis of homoskedasticity. Therefore, the homoskedasticity assumption was met.</p>
+<pre class="r"><code>#robust SEs
+coeftest(fit1, vcov = vcovHC(fit1))</code></pre>
+<pre><code>## 
+## t test of coefficients:
+## 
+##                       Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)          362.50575   30.22291 11.9944  &lt; 2e-16 ***
+## age_c                 -0.43267    3.14510 -0.1376  0.89070    
+## status_catdead       -75.65750   34.21399 -2.2113  0.02803 *  
+## age_c:status_catdead  -1.27437    3.55325 -0.3587  0.72020    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>For patients with an average age, survival time is 75.6570 days lower for dead patients compared to censored patients (significant effect, t=-2.2113, p-value = 0.02803). The effect of age by itself and the interaction between age and status were not significant (p-values were greater than the alpha) effects on survival time. Therefore, there were no changes after accounting for robust standard errors as the censoring status was the only significant effect for both linear regressions with uncorrected standard errors and robust standard errors.</p>
+<pre class="r"><code>#explaining variation
+(summary(fit1)$r.sq)*100</code></pre>
+<pre><code>## [1] 3.148419</code></pre>
+<p>The model explains 3.1484% of the variation in the outcome. This low value indicates that there may be other factors or variables that can explain the variation that were not included in this model.</p>
+<p>#4. Bootstrapped SEs</p>
+<pre class="r"><code>boot_dat&lt;- sample_frac(cancer, replace=T)
+samp_distn&lt;-replicate(5000, {
+  boot_dat &lt;- sample_frac(cancer, replace=T) 
+  fit2 &lt;- lm(time ~ age_c*status_cat,  data=boot_dat) 
+  coef(fit2) 
+})
+#estimated SEs
+samp_distn %&gt;% t %&gt;% as.data.frame %&gt;% summarize_all(sd)</code></pre>
+<pre><code>##   (Intercept)    age_c status_catdead age_c:status_catdead
+## 1     29.4542 3.080409       33.23219              3.48475</code></pre>
+<p>The bootstrapped standard errors have very slightly decreased when compared to the robust standard errors but have very slightly increased when compared to the original standard errors. An increased standard error would indicate a decreased t-statistic and thus an increased p-value. Oppositely, a decreased standard error would indicate an increased t-statistic and a decreased p-value. However, since the bootstrapped standard errors are between the narrow range of the original and robust standard errors, there is likely no significant change in the p-values. Thus, I would still likely find that the only significant effect on survival time would be the censoring status of a patient of average age.</p>
+<p>#5. Logistic Regression</p>
+<pre class="r"><code>fit3 &lt;- glm(status ~ time + ph.karno + sex_cat, data = cancer, family = &quot;binomial&quot;)
+summary(fit3)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = status ~ time + ph.karno + sex_cat, family = &quot;binomial&quot;, 
+##     data = cancer)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.1791  -1.1153   0.5789   0.8045   1.4909  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)  3.6695137  1.1872042   3.091 0.001996 ** 
+## time        -0.0013194  0.0007368  -1.791 0.073351 .  
+## ph.karno    -0.0345150  0.0139215  -2.479 0.013165 *  
+## sex_catmale  1.0630585  0.3153277   3.371 0.000748 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 267.48  on 225  degrees of freedom
+## Residual deviance: 243.50  on 222  degrees of freedom
+## AIC: 251.5
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<pre class="r"><code>exp(coef(fit3))</code></pre>
+<pre><code>## (Intercept)        time    ph.karno sex_catmale 
+##  39.2328242   0.9986815   0.9660738   2.8952124</code></pre>
+<pre class="r"><code>prob2 &lt;- predict(fit3, type = &quot;response&quot;)
+pred2 &lt;- ifelse(prob2&gt;.5,1,0)</code></pre>
+<p>Controlling for ph.karno scores and sex, for every one additional day in survival time, odds of status increase by a factor of 0.9987 (not significant, p-value = 0.0734). Controlling for time and sex, for every one additional point in ph.karno score, odds of status increase by a factor of 0.9661 (significant, p-value of 0.0132). Controlling for time and ph.karno scores, odds of status for males is 2.8952 times odds of status for females (significant effect, p-value = 0.0007).</p>
+<pre class="r"><code>#confusion matrix
+table(prediction=pred2, truth=cancer$status) %&gt;% addmargins</code></pre>
+<pre><code>##           truth
+## prediction   0   1 Sum
+##        0    12   9  21
+##        1    51 154 205
+##        Sum  63 163 226</code></pre>
+<pre class="r"><code>(12+154)/226 #accuracy (acc)</code></pre>
+<pre><code>## [1] 0.7345133</code></pre>
+<pre class="r"><code>154/163 #sensitivity (tpr)</code></pre>
+<pre><code>## [1] 0.9447853</code></pre>
+<pre class="r"><code>12/63 #specificity (tnr)</code></pre>
+<pre><code>## [1] 0.1904762</code></pre>
+<pre class="r"><code>154/205 #precision (ppv)</code></pre>
+<pre><code>## [1] 0.7512195</code></pre>
+<p>The confusion matrix is computed above. There is an accuracy of 0.7345 of correctly identified statuses. The sensitivity is 0.9448, indicating a high probability of correctly identifying a dead patient. The specificity of 0.1905 showcases the probability of a censored status for a censored patient. The precision is 0.7512, and is the proportion of those classified as dead who actually are dead.</p>
+<pre class="r"><code>#density plot
+cancer$logit&lt;-predict(fit3,type=&quot;link&quot;) 
+cancer %&gt;% ggplot() + geom_density(aes(logit,color=status_cat,fill=status_cat), alpha=.4)+
+  theme() + geom_vline(xintercept=0) + xlab(&quot;logit (log-odds)&quot;) +
+  geom_rug(aes(logit,color=status_cat))</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>#ROC plot and AUC
+library(plotROC)
+ROCplot &lt;- ggplot(cancer) + geom_roc(aes(d=status, m =prob2), n.cuts = 0)
+ROCplot</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
+<pre class="r"><code>calc_auc(ROCplot)</code></pre>
+<pre><code>##   PANEL group      AUC
+## 1     1    -1 0.708589</code></pre>
+<p>The density plot showcases the proportions that were correctly classified. The gray overlapping area is the proportion of the predicted log-odds that have been misclassified. The AUC of the ROC plot is 0.7086, which indicates that the model is fair for predicting status from survival time, ph. karno scores, and sex.</p>
+<pre class="r"><code>class_diag&lt;-function(probs,truth){
+  tab&lt;-table(factor(probs&gt;.5,levels=c(&quot;FALSE&quot;,&quot;TRUE&quot;)),truth)
+  acc=sum(diag(tab))/sum(tab)
+  sens=tab[2,2]/colSums(tab)[2]
+  spec=tab[1,1]/colSums(tab)[1]
+  ppv=tab[2,2]/rowSums(tab)[2]
+  if(is.numeric(truth)==FALSE &amp; is.logical(truth)==FALSE) truth&lt;-as.numeric(truth)-1
+  ord&lt;-order(probs, decreasing=TRUE)
+  probs &lt;- probs[ord]; truth &lt;- truth[ord]
+  TPR=cumsum(truth)/max(1,sum(truth)) 
+  FPR=cumsum(!truth)/max(1,sum(!truth))
+  dup&lt;-c(probs[-1]&gt;=probs[-length(probs)], FALSE)
+  TPR&lt;-c(0,TPR[!dup],1); FPR&lt;-c(0,FPR[!dup],1)
+  n &lt;- length(TPR)
+  auc&lt;- sum( ((TPR[-1]+TPR[-n])/2) * (FPR[-1]-FPR[-n]) )
+  data.frame(acc,sens,spec,ppv,auc)
+}
+
+#10-fold CV
+set.seed(1234)
+k=10
+data2&lt;-cancer[sample(nrow(cancer)),] 
+folds&lt;-cut(seq(1:nrow(cancer)),breaks=k,labels=F) 
+diags&lt;-NULL
+for(i in 1:k){          
+  train&lt;-data2[folds!=i,] 
+  test&lt;-data2[folds==i,]
+  truth&lt;-test$status
+  fit3&lt;- glm(status ~ time + ph.karno + sex_cat, data=train)
+  probs&lt;- predict(fit3, newdata=test)
+  diags&lt;-rbind(diags, class_diag(probs,truth))
+}
+summarize_all(diags,mean)</code></pre>
+<pre><code>##         acc      sens      spec       ppv       auc
+## 1 0.7037549 0.9496732 0.1016667 0.7314487 0.6800657</code></pre>
+<p>The out-of-sample accuracy, sensitivity, and recall are 0.7113, 0.9469, and 0.7359 respectively. The out-of-sample AUC from the CV was also 0.7007. There was not much change between the out-of-sample class diagnostics and the in-sample class diagnostics, indicating that the original model was probably not overfitting.</p>
+<p>#6. LASSO regression</p>
+<pre class="r"><code>library(glmnet)</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Matrix&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:tidyr&#39;:
+## 
+##     expand, pack, unpack</code></pre>
+<pre><code>## Loaded glmnet 3.0-2</code></pre>
+<pre class="r"><code>cancer1 &lt;- cancer %&gt;% select(-status_cat, -logit, -age_c)
+view(cancer1)
+y &lt;- as.matrix(cancer1$status)
+x &lt;- model.matrix(status~., data=cancer1)[,-1]
+cv&lt;-cv.glmnet(x,y,family=&quot;binomial&quot;) 
+lasso&lt;-glmnet(x,y,family=&quot;binomial&quot;,lambda=cv$lambda.1se) 
+coef(lasso)</code></pre>
+<pre><code>## 7 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
+##                     s0
+## (Intercept)  1.2888871
+## sex         -0.3983496
+## sex_catmale  .        
+## age          .        
+## time         .        
+## ph.ecog      0.2471541
+## ph.karno     .</code></pre>
+<pre class="r"><code>set.seed(1234) 
+k=10
+data3 &lt;- cancer1 %&gt;% sample_frac 
+folds &lt;- ntile(1:nrow(data3),n=10)
+
+diags&lt;-NULL 
+for(i in 1:k){
+  train &lt;- data3[folds!=i,] 
+  test &lt;- data3[folds==i,] 
+  truth &lt;- test$status 
+  
+  fit4 &lt;- glm(status~ ph.ecog, data=train, family=&quot;binomial&quot;)
+  probs &lt;- predict(fit4, newdata=test, type=&quot;response&quot;) 
+  diags&lt;-rbind(diags,class_diag(probs,truth))
+} 
+diags%&gt;%summarize_all(mean)</code></pre>
+<pre><code>##        acc sens spec      ppv       auc
+## 1 0.720751    1    0 0.720751 0.6469163</code></pre>
+<p>The status_cat variable was removed since it was the categorical version of the binary response variable and interfered with the LASSO results. Similarily, the logit and age_c variables were removed as they were created for the other regression models and also interferred with the LASSO regression.</p>
+<p>The ph.ecog variable was found to be the most important predictor for patient censoring status. Therefore, the ph.ecog variable was used as the only predictor for status and was used to run class diagnositics under CV. The AUC from the LASSO regression was 0.6301. Compared to the out-of-sample AUC of 0.7001 from the logistic regression, the worse performance indicates that the model was actually overfitting.</p>
+
+              <hr>
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/docs.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

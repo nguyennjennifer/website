@@ -42,7 +42,7 @@ print(a, "quail", is_verb, a, r.bird)
 print(a, "whale", is_verb, a, r.fish)
 ```
 
-Translated, the sentences read "a quail is a bird, a whale is a fish". 
+Translated, the sentences read "a quail is a bird" and "a whale is a fish". 
 
 Now I know what you're thinking; whales aren't fish, they're mammals. However, my dad already knew the animals themselves, but was just confused on differentiating the two based on pronounciation. It was just easier to describe them with basic terms in order for my dad to easily put the name to the image.
 

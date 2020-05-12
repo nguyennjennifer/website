@@ -10,24 +10,27 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ![](/blog/Communicating_files/image.png)
 
-In my computational biology class, we've been learning how to use both R code and Python in R studio. Now, I'm a total novice at coding and so when I first saw this I was like "Why? Why do I need to do this?". And then it finally clicked. 
 
-My parents immigrated here in the the early 1990s and have been here since. However in order to live in Texas, they've learned a decent amount of English (and a little bit of Spanish). 
-Then there's me; I'm a Vietnamese American. I would probably say that English is my first language but I did learn Vietnamese growing up. I'd also say that I'm fluent in Vietnamese but I'm not exactly at the same level of proficiency that I am with English. 
-That being said, I grew up in a household where my family communicated in what I call Vietlish, an amalgam of Vietnamese and English that my sister and I have created over the 20-some years we've been alive. Vietlish is essential for me in order to effectively communicate with my parents. 
+In my computational biology class, we've been learning how to use both R code and Python in R studio. In order to better understand the point of using both languages, I thought of an example that showcases how using both coding languages can be helpful.
 
-Metaphorically, R would be English to me; the predominant language I'm most familiar with, the language that constitutes what I've learned the most of, the language that comes most naturally to me when I'm coding. On the other hand, Python would be Vietnamese; the second language that I'm still learning, the language I still have difficulties with from time to time, but a language I use to do things that R can't do.
+My parents immigrated to the U.S. from Viet Nam in the the early 1990s and have been in Texas ever since. In order to be functioning U.S. citizens, they've learned a decent amount of English (and a little bit of Spanish). I would say they have passable day-to-day English skills, but are definitely 100% more comfortable in their native tongue. 
 
-Going back to my parents, let's say I'm trying to explain the difference between the words "quail" and "whale". Weirdly enough, this is a true story that happened yesterday whilst talking to my dad. 
+Then there's me; I'm a Vietnamese American. I would probably say that English is my first language, but I did learn Vietnamese growing up. I'd also say that I'm fluent in Vietnamese but I'm not exactly at the same level of proficiency that I am with English. 
 
-My thought process would first be in English (i.e. R). I would think about what I know about quails and whales, simple descriptions that would make it easy to differentiate between the two. Then I would translate the english words into vietnamese words (i.e. vectors).
+That being said, I grew up in a household where my family communicated in what I call Vietlish, an amalgam of Vietnamese and English that my sister and I have created over the 20-some years we've been alive. Over time, Vietlish has become essential for me in order to effectively communicate with my parents. Vietlish primarily consists of Vietnamese I've learned over the years, with some English substituting in for words that aren't translatable or words that I don't know.
+
+Metaphorically, R would be English to me; it's the  language I'm most familiar and comfortable with, the language that my parents are still learning, the language that I translate from. On the other hand, Python would be Vietnamese; it's the second language that I'm still learning, the language that my parents consider their first language, the language I'm translating words into.
+
+For example, let's say I'm trying to explain the difference between the words "quail" and "whale". Weirdly enough, this is a true story that happened yesterday while talking to my dad about dinner (we were eating quail, not whale ok). 
+
+When translating, my thought process would first be in English (i.e. R). I would think about what I know about quails and whales, simple descriptions that would make it easy to differentiate between the two. Then I would translate the English words into Vietnamese words (i.e. vectors).
 
 ```{r}
 bird <- c("chim")
 fish <- c("cá")
 ```
 
-Then, I would create a sentence based on what I could translate, using the Vietnamese (i.e. Python) to create the structure of the sentence.
+Then, I would create a sentence based on what I could translate, using the Vietnamese (i.e. Python) that I already knew (or basic Vietnamese that doesn't require much thinking in order to translate) to create the structure of the sentence.
 ```{r}
 library(reticulate)
 ```
@@ -39,6 +42,13 @@ print(a, "quail", is_verb, a, r.bird)
 print(a, "whale", is_verb, a, r.fish)
 ```
 
-Translated, the sentences read "a quail is a bird, a whale is a fish". Now I know what you're thinking; whales are not fish, they're mammals. However, my dad already knew the animals themselves, but was just confused on differentiating the two based on pronounciation. Thus, it was better for me to describe them with my minimal Vietlish in order for my dad to easily put the name to the image.
+Translated, the sentences read "a quail is a bird, a whale is a fish". 
 
-Yes, I editted a real picture of my dad petting a statue of a monkey. I had no idea what was going through his head while this picture was being taken. 
+Now I know what you're thinking; whales aren't fish, they're mammals. However, my dad already knew the animals themselves, but was just confused on differentiating the two based on pronounciation. It was just easier to describe them with basic terms in order for my dad to easily put the name to the image.
+
+Overall, this is how I communicate with my parents. Of course, it's not always this structured and complex. But it's the basics of Vietlish to me and my family.
+
+
+
+Sidenote: 
+Yes, I edited a real picture of my dad petting a statue of a monkey. No, I have no idea what was going on or why this picture was even taken. 

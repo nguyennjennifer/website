@@ -1,7 +1,7 @@
 ---
 title: "Project 1"
 author: "Jennifer Nguyen (JNN497)"
-date: "3/12/2020"
+date: "2020-03-12"
 output:
   html_document:
     df_print: paged

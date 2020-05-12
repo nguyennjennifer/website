@@ -1,7 +1,7 @@
 ---
 title: "Project 2"
 author: "Jennifer Nguyen (JNN497)"
-date: "4/23/2020"
+date: "2020-04-23"
 output:
   html_document:
     df_print: paged
@@ -15,12 +15,12 @@ I chose the cancer dataset from the survival package. This dataset contains info
 <p>In this dataset, the binary variable is the sex variable and has two levels, male (1) or female (2). I mutated the sex variable into a categorical variable called “sex_cat” that had “male” and “female” for their respective observations. Another binary variable is the status variable, and it holds the censoring status of the patient as either 0 (censored) or 1 (dead). A categorical variable was created from the binary status variable named “status_cat” that has the levels of “censored” and “dead” to indicate the respective status of the patient. The numeric variables are the ph.ecog variable, the ph.karno variable, the time variable, and the age variable. The ph.ecog variable measures the status of the patient from 0 to 4, with 0 being asymptomatic and 4 being bedbound. The ph.karno variable is the Karnofsky performance score on a scale from 0 to 100 rated by a physician, with 0 being bad and 100 being good. The time variable is the survival time in days of the patient. The age variable tells us the age of the patient. There are 226 observations in my dataset.</p>
 <p>##1. MANOVA</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ───────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.0     ✓ purrr   0.3.3
 ## ✓ tibble  2.1.3     ✓ dplyr   0.8.5
 ## ✓ tidyr   1.0.2     ✓ stringr 1.4.0
 ## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
-<pre><code>## ── Conflicts ──────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(survival)
@@ -140,7 +140,7 @@ for(i in 1:5000){
   rand_dist[i]&lt;- mean(new[new$status_cat==&quot;censored&quot;,]$time) - 
     mean(new[new$status==&quot;dead&quot;,]$time)}
 mean(rand_dist&lt; -78.06768 | rand_dist&gt; 78.06768 ) #two-tailed p-value</code></pre>
-<pre><code>## [1] 0.0138</code></pre>
+<pre><code>## [1] 0.009</code></pre>
 <pre class="r"><code>{hist(rand_dist,main=&quot;&quot;,ylab=&quot;&quot;); abline(v = c(-78.06768, 78.06768)  ,col=&quot;red&quot;)}</code></pre>
 <p><img src="/project2_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <pre class="r"><code>t.test(data=data1, time~status_cat)</code></pre>
@@ -241,7 +241,7 @@ samp_distn&lt;-replicate(5000, {
 #estimated SEs
 samp_distn %&gt;% t %&gt;% as.data.frame %&gt;% summarize_all(sd)</code></pre>
 <pre><code>##   (Intercept)    age_c status_catdead age_c:status_catdead
-## 1     29.4542 3.080409       33.23219              3.48475</code></pre>
+## 1    29.30139 3.093383       33.66398             3.510483</code></pre>
 <p>The bootstrapped standard errors have very slightly decreased when compared to the robust standard errors but have very slightly increased when compared to the original standard errors. An increased standard error would indicate a decreased t-statistic and thus an increased p-value. Oppositely, a decreased standard error would indicate an increased t-statistic and a decreased p-value. However, since the bootstrapped standard errors are between the narrow range of the original and robust standard errors, there is likely no significant change in the p-values. Thus, I would still likely find that the only significant effect on survival time would be the censoring status of a patient of average age.</p>
 <p>#5. Logistic Regression</p>
 <pre class="r"><code>fit3 &lt;- glm(status ~ time + ph.karno + sex_cat, data = cancer, family = &quot;binomial&quot;)

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Jennifer Nguyen" />
+    <meta name="description" content="Describe your website">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
+    <title>Communicating with R and Python</title>
+    <meta name="generator" content="Hugo 0.70.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/projects/">PROJECTS</a></li>
+        
+        <li><a href="/resume.pdf">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="/blog/communicating/">Communicating with R and Python</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          May 6, 2020
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<p><img src="/blog/Communicating_files/image.png" /></p>
+<p>In my computational biology class, we’ve been learning how to use both R code and Python in R studio. Now, I’m a total novice at coding and so when I first saw this I was like “Why? Why do I need to do this?”. And then it finally clicked.</p>
+<p>My parents immigrated here in the the early 1990s and have been here since. However in order to live in Texas, they’ve learned a decent amount of English (and a little bit of Spanish).
+Then there’s me; I’m a Vietnamese American. I would probably say that English is my first language but I did learn Vietnamese growing up. I’d also say that I’m fluent in Vietnamese but I’m not exactly at the same level of proficiency that I am with English.
+That being said, I grew up in a household where my family communicated in what I call Vietlish, an amalgam of Vietnamese and English that my sister and I have created over the 20-some years we’ve been alive. Vietlish is essential for me in order to effectively communicate with my parents.</p>
+<p>Metaphorically, R would be English to me; the predominant language I’m most familiar with, the language that constitutes what I’ve learned the most of, the language that comes most naturally to me when I’m coding. On the other hand, Python would be Vietnamese; the second language that I’m still learning, the language I still have difficulties with from time to time, but a language I use to do things that R can’t do.</p>
+<p>Going back to my parents, let’s say I’m trying to explain the difference between the words “quail” and “whale”. Weirdly enough, this is a true story that happened yesterday whilst talking to my dad.</p>
+<p>My thought process would first be in English (i.e. R). I would think about what I know about quails and whales, simple descriptions that would make it easy to differentiate between the two. Then I would translate the english words into vietnamese words (i.e. vectors).</p>
+<pre class="r"><code>bird &lt;- c(&quot;chim&quot;)
+fish &lt;- c(&quot;cá&quot;)</code></pre>
+<p>Then, I would create a sentence based on what I could translate, using the Vietnamese (i.e. Python) to create the structure of the sentence.</p>
+<pre class="r"><code>library(reticulate)</code></pre>
+<pre class="python"><code>a = &quot;con&quot;
+is_verb = &quot;là&quot;
+print(a, &quot;quail&quot;, is_verb, a, r.bird)</code></pre>
+<pre><code>## con quail là con chim</code></pre>
+<pre class="python"><code>print(a, &quot;whale&quot;, is_verb, a, r.fish)</code></pre>
+<pre><code>## con whale là con cá</code></pre>
+<p>Translated, the sentences read “a quail is a bird, a whale is a fish”. Now I know what you’re thinking; whales are not fish, they’re mammals. However, my dad already knew the animals themselves, but was just confused on differentiating the two based on pronounciation. Thus, it was better for me to describe them with my minimal Vietlish in order for my dad to easily put the name to the image.</p>
+<p>Yes, I editted a real picture of my dad petting a statue of a monkey. I had no idea what was going through his head while this picture was being taken.</p>
+
+              <hr>
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/docs.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

@@ -20,6 +20,7 @@ theme = "hugo-sustain"
   custom_js  = []
 
 [params.social]
+  Github        = "nguyennjennifer"
   Email         = "jennifernguyen@utexas.edu"
   Instagram     = "jennifern.nguyen"
 
